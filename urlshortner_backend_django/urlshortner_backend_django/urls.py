@@ -15,7 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from urlshortner.views import basic_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', basic_view),
+    
 ]
