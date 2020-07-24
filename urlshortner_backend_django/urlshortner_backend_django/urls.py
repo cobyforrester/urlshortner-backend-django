@@ -15,10 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from urlshortner.views import basic_view
+from urlshortner.views import home_page#, Long2Short
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', basic_view),
+    path('', home_page),
+    #path('processing/', Long2Short),
     
 ]

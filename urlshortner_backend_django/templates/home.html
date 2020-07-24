@@ -1,4 +1,12 @@
 <h1 style="text-align:center; color: darkblue;">Hello, World</h1>
 
-<p>Long Url: {{ urlItem.shorturl }}</p>
-<p>Short Url: {{ urlItem.longurl }}</p>
+<form method="POST" action="">
+    {% csrf_token %}
+    <label for="LongURL">LongURL:</label><br>
+    <input type="text" id="LongURL" name="LongURL"><br>
+    <input type="submit" value="Submit">
+</form>
+
+<p>Short Url: {{ urlItem.short_URL }}</p>
+
+
