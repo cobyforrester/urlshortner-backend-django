@@ -4,21 +4,20 @@ from .models import URLModel
 import short_url
 
 def home_page(request, *args, **kwargs):
-    
+    URL_object = None
     if request.method == "POST":
-        if request.POST.get('LongURl'):
-            #Create an object to be saved into the model
-            short_URL = URLModel.objects.create(longurl = longURL)
-            domain = 'mini'
+        if request.POST.get('LongURL'):
+            #Get the user's long URL
             longURL = request.POST.get('LongURL')
-            
-            
-            short_URL = request.POST.get('LongURL')
-            print(short_URL)
-
             #Create an object to be saved into the model
-            short_URL = URLModel(longurl = longURL, shorturl = None)
-            return render(request, 'home.html', context={'urlItem': short_URL}, status=200)
+            URL_object = URLModel.objects.create(longurl = longURL)
+            #Create a short url
+            domain = 'mini'
+            id = URL_object.id
+            short_URL = "http://{}/{}".format(domain, short_url.encode_url(id))
+            print(short_URL)
+            URL_object.shorturl = short_URL
+        return render(request, 'home.html', context={'urlItem': URL_object}, status=200)
     else:
         return render(request, 'home.html', context={}, status=200)
 
