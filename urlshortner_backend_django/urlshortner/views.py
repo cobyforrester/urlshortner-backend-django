@@ -1,9 +1,10 @@
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from .models import URLModel
+from django.conf import settings
 import short_url
 
-
+DOMAIN_NAME = settings.DOMAIN_NAME
 def home_page(request, *args, **kwargs):
     URL_object = None
     if request.method == "POST":
@@ -69,9 +70,8 @@ def api_shorturl_processor(request,*args, **kwargs):
         return JsonResponse({'shorturl': obj.shorturl}, status=200)
 
     # ==== create the short url ====
-    domain = 'heroku.mini.app'
     id = URLModel.objects.all().count()
-    short_URL = "http://{}/{}".format(domain, short_url.encode_url(id))
+    short_URL = "http://{}/{}".format(DOMAIN_NAME, short_url.encode_url(id))
     URL_object = URLModel.objects.create(longurl=longurl, shorturl=short_URL)
     return JsonResponse({'shorturl': short_URL}, status=201)
 

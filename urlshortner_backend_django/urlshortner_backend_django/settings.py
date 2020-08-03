@@ -25,6 +25,8 @@ SECRET_KEY = '1xs9p*j*m&m$c2_m=aluf#@ept7odfp%2t%p%j17le^(3jhl96'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+DOMAIN_NAME = '127.0.0.1:8000'
+
 ALLOWED_HOSTS = ['*']
 
 #for allowing all cors headers
