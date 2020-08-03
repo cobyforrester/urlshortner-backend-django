@@ -1,6 +1,7 @@
 <h1 style="text-align:center; color: darkblue;">Hello, World</h1>
 
-<form method="POST" action="">
+<!-- before <form method="POST" action=""> -->
+<form method="POST" action="api/urlshortner/process">
     {% csrf_token %}
     <label for="LongURL">LongURL:</label><br>
     <input type="text" id="LongURL" name="LongURL"><br>

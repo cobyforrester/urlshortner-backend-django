@@ -40,26 +40,39 @@ def api_shorturl_processor(request,*args, **kwargs):
     Consume with vue.js
     return Json
     '''
+
+    # ==== request type ====
+    if not request.method == "POST":
+        return JsonResponse({'message': 'Must be post!'}, status=400)
+
     # ==== getting data ====
-    if request.method == "POST":
-        data = request.POST
+    if request.POST:
+        longurl = request.POST.get('LongURL')
     elif request.data:
-        data = request.data
+        longurl = request.data['LongURL']
     else:
         return JsonResponse({}, status=400)
     
+    print(longurl)
     # ==== clean the data ====
-    if not data.longurl:
+    if not longurl:
         return JsonResponse({'message': 'No field can be empty!'}, status=400)
-    elif not isinstance(data.longurl, str): #checks if url sent is unicode
+    elif not isinstance(longurl, str): #checks if url sent is unicode
         return JsonResponse({'message': 'URL must be unicode characters!'}, status=400)
-    elif len(data.longurl) > 10000:
+    elif len(longurl) > 10000:
         return JsonResponse({'message': 'Really?'}, status=400)
+
+    # ==== if already in DB ==== 
+    qs = URLModel.objects.filter(longurl=longurl)
+    if qs.exists():
+        obj = qs.first()
+        return JsonResponse({'shorturl': obj.shorturl}, status=200)
 
     # ==== create the short url ====
     domain = 'heroku.mini.app'
-    short_URL = "http://{}/{}".format(domain, short_url.encode_url(data.longurl))
-    URL_object = URLModel.objects.create(longurl=data.longurl, shorturl=short_URL)
-    return JsonResponse(URL_object, status=201)
+    id = URLModel.objects.all().count()
+    short_URL = "http://{}/{}".format(domain, short_url.encode_url(id))
+    URL_object = URLModel.objects.create(longurl=longurl, shorturl=short_URL)
+    return JsonResponse({'shorturl': short_URL}, status=201)
 
 
