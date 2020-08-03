@@ -1,7 +1,8 @@
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from .models import URLModel
 import short_url
+
 
 def home_page(request, *args, **kwargs):
     URL_object = None
@@ -32,3 +33,33 @@ def Long2Short(request, *args, **kwargs):
 
     return HttpResponseRedirect("/")
 '''
+
+def api_shorturl_processor(request,*args, **kwargs):
+    '''
+    API endpoint 
+    Consume with vue.js
+    return Json
+    '''
+    # ==== getting data ====
+    if request.method == "POST":
+        data = request.POST
+    elif request.data:
+        data = request.data
+    else:
+        return JsonResponse({}, status=400)
+    
+    # ==== clean the data ====
+    if not data.longurl:
+        return JsonResponse({'message': 'No field can be empty!'}, status=400)
+    elif not isinstance(data.longurl, str): #checks if url sent is unicode
+        return JsonResponse({'message': 'URL must be unicode characters!'}, status=400)
+    elif len(data.longurl) > 10000:
+        return JsonResponse({'message': 'Really?'}, status=400)
+
+    # ==== create the short url ====
+    domain = 'heroku.mini.app'
+    short_URL = "http://{}/{}".format(domain, short_url.encode_url(data.longurl))
+    URL_object = URLModel.objects.create(longurl=data.longurl, shorturl=short_URL)
+    return JsonResponse(URL_object, status=201)
+
+

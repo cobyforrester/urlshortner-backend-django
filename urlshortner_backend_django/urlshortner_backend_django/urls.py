@@ -21,5 +21,4 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home_page),
     #path('processing/', Long2Short),
-    
 ]
