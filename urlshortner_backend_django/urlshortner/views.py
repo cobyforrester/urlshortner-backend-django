@@ -16,8 +16,10 @@ def home_page(request, *args, **kwargs):
             id = URL_object.id
             short_URL = "http://{}/{}".format(domain, short_url.encode_url(id))
             print(short_URL)
-            URL_object.shorturl = short_URL
-        return render(request, 'home.html', context={'urlItem': URL_object}, status=200)
+            URL_object_return = URLModel.objects.get(id=id)
+            URL_object_return.shorturl = short_URL
+            URL_object_return.save()
+        return render(request, 'home.html', context={'urlItem': URL_object_return.shorturl}, status=200)
     else:
         return render(request, 'home.html', context={}, status=200)
 
