@@ -76,3 +76,10 @@ def api_shorturl_processor(request,*args, **kwargs):
     return JsonResponse({'shorturl': short_URL}, status=201)
 
 
+def shortURL_redirect(request, url, *args, **kwargs):
+    
+    qs = URLModel.objects.filter(shorturl=url)
+    if not qs.exists():
+        return JsonResponse({'message': 'Page not found'}, status=404)
+    obj = qs.first()
+    return redirect(obj.longurl)

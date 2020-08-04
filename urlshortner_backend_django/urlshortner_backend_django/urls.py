@@ -15,12 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from urlshortner.views import home_page, api_shorturl_processor #, Long2Short
+from urlshortner.views import home_page, api_shorturl_processor, shortURL_redirect
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home_page),
     #path('processing/', Long2Short),
-    path('api/urlshortner/process', api_shorturl_processor)
-
+    path('api/urlshortner/process', api_shorturl_processor),
+    path('<str:url>', shortURL_redirect),
 ]
