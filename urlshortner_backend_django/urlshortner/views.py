@@ -77,8 +77,8 @@ def api_shorturl_processor(request,*args, **kwargs):
 
 
 def shortURL_redirect(request, url, *args, **kwargs):
-    
-    qs = URLModel.objects.filter(shorturl=url)
+    s = "http://127.0.0.1:8000" + request.get_full_path()
+    qs = URLModel.objects.filter(shorturl=s)
     if not qs.exists():
         return JsonResponse({'message': 'Page not found'}, status=404)
     obj = qs.first()

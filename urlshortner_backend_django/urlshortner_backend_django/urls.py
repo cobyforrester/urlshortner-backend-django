@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, re_path
 from urlshortner.views import home_page, api_shorturl_processor, shortURL_redirect
 
 urlpatterns = [
@@ -22,5 +22,6 @@ urlpatterns = [
     path('', home_page),
     #path('processing/', Long2Short),
     path('api/urlshortner/process', api_shorturl_processor),
-    path('<str:url>', shortURL_redirect),
+    re_path(r'^((?!\/admin).)*$', shortURL_redirect),
+    
 ]
