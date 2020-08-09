@@ -1,13 +1,29 @@
-<h1 style="text-align:center; color: darkblue;">Hello, World</h1>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MiniUrl</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body class="text-center">
 
-<!-- before <form method="POST" action=""> -->
-<form method="POST" action="api/urlshortner/process">
-    {% csrf_token %}
-    <label for="LongURL">LongURL:</label><br>
-    <input type="text" id="LongURL" name="LongURL"><br>
-    <input type="submit" value="Submit">
-</form>
+    <h1 class="pt-4">MiniUrl</h1>
+    <div class="container pt-3">
+      <div class="row justify-content-md-center">
+        <div class="col col-5">
+          <!-- before <form method="POST" action=""> -->
+            <form method="POST" action="api/urlshortner/process">
+            {% csrf_token %}
+                <label for="LongURL">LongURL:</label><br>
+                <input type="text" id="LongURL" name="LongURL"><br>
+                <input class="btn mt-3 btn-primary" type="submit" value="Submit">
+            </form>
 
 <p>Short Url: {{ urlItem }}</p>
+      </div>
+    </div>
 
+  </body>
 
+  <script src="index.js"></script>
+</html>

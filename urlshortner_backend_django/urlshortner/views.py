@@ -24,7 +24,7 @@ def home_page(request, *args, **kwargs):
             URL_object_return.save()
         return render(request, 'home.html', context={'urlItem': URL_object_return.shorturl}, status=200)
     else:
-        return render(request, 'home.html', context={}, status=200)
+        return render(request, 'index.html', context={}, status=200)
 
 '''
 def Long2Short(request, *args, **kwargs):

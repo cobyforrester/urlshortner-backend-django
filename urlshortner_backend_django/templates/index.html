@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MiniUrl</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  </head>
+  <body class="text-center">
+
+    <h1 class="pt-4">MiniUrl</h1>
+    <div class="container pt-3">
+      <div class="row justify-content-md-center">
+        <div class="col col-5">
+          <div class="form-group ">
+            <label>Input any url!</label>
+            <input type="url" class="form-control" id="longurl" placeholder="LongUrl">
+            <button onclick="onClickSubmit()" class="btn btn-primary mt-2">Submit</button>
+          </div>
+      </div>
+    </div>
+    <div class="row justify-content-md-center">
+      <div class="col col-12">
+      <h4 id="shorturl"></h4>
+    </div>
+    </div>
+  </body>
+
+  <script>
+    const onClickSubmit = async () => {
+  let longurl = document.getElementById("longurl").value;
+
+  //SENDING URL TO BACKEND
+  const csrftoken = getCookie("csrftoken");
+  let options = {
+    headers: {
+      "X-CSRFToken": csrftoken,
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    xsrfHeaderName: "X-CSRFToken",
+    credentials: "same-origin",
+    method: "POST",
+    body: JSON.stringify({ longurl: longurl }),
+  };
+  try {
+  let response = await fetch("api/urlshortner/process", options); // resolves with response headers
+  let result = await response.json(); // read body as json
+  document.getElementById("shorturl").innerHTML = `Short Url: ${result.shorturl}`;
+  }
+  catch{
+    document.getElementById("shorturl").innerHTML = "ERROR OCCURED";
+  }
+
+  document.getElementById("longurl").value = "";
+};
+
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== "") {
+    const cookies = document.cookie.split(";");
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      // Does this cookie string begin with the name we want?
+      if (cookie.substring(0, name.length + 1) === name + "=") {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+  </script>
+</html>
