@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from .models import URLModel
 from django.conf import settings
 import short_url
+import json
 
 DOMAIN_NAME = settings.DOMAIN_NAME
 def home_page(request, *args, **kwargs):
@@ -42,6 +43,7 @@ def api_shorturl_processor(request,*args, **kwargs):
     return Json
     '''
 
+
     # ==== request type ====
     if not request.method == "POST":
         return JsonResponse({'message': 'Must be post!'}, status=400)
@@ -49,8 +51,8 @@ def api_shorturl_processor(request,*args, **kwargs):
     # ==== getting data ====
     if request.POST:
         longurl = request.POST.get('LongURL')
-    elif request.data:
-        longurl = request.data['LongURL']
+    elif request.body:
+        longurl = json.loads(request.body.decode('utf-8'))['longurl']
     else:
         return JsonResponse({}, status=400)
     
