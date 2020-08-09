@@ -82,4 +82,11 @@ def shortURL_redirect(request, url, *args, **kwargs):
     if not qs.exists():
         return JsonResponse({'message': 'Page not found'}, status=404)
     obj = qs.first()
+
+    # Checks if the page can be found/is online
+    try:
+        redirect(obj.longurl)
+    except:
+        return JsonResponse({'message': 'Page not found'}, status=404)
+
     return redirect(obj.longurl)
