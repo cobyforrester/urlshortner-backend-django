@@ -87,6 +87,6 @@ def shortURL_redirect(request, url, *args, **kwargs):
     try:
         redirect(obj.longurl)
     except:
-        return JsonResponse({'message': 'Page not found'}, status=404)
+        return render(request, 'error.html', context={'error_url': obj.longurl}, status=200)
 
     return redirect(obj.longurl)
