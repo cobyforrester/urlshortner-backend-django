@@ -4,6 +4,7 @@ from .models import URLModel
 from django.conf import settings
 import short_url
 import json
+import hashlib
 
 DOMAIN_NAME = settings.DOMAIN_NAME
 def home_page(request, *args, **kwargs):
@@ -64,6 +65,38 @@ def api_shorturl_processor(request,*args, **kwargs):
         return JsonResponse({'message': 'URL must be unicode characters!'}, status=400)
     elif len(longurl) > 10000:
         return JsonResponse({'message': 'Really?'}, status=400)
+
+
+    def base62(givenId, n): #n is number of characters to return
+        varId = givenId
+        strFnl = ""
+        mapChars = mapCharsDic()
+        for i in range(n):
+            p = n - i - 1 # n-1 n-2 n-3
+            if pow(62, p) <= varId:
+                mult = 1
+                while mult * pow(62, p) < varId:
+                    mult += 1
+                mult -= 1
+                varId -= mult * pow(62, p)
+                strFnl += mapChars[mult]
+            else:
+                strFnl += "0"
+        return strFnl
+    def mapCharsDic():
+        nums = '0123456789'
+        lAlph = 'abcdefghijklmnopqrstuvwxyz'
+        uAlph = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+        total = nums+lAlph+uAlph
+        mapChars = {}
+        for i, val in enumerate(total):
+            mapChars[i] = val
+        return mapChars
+
+    id = 1
+
+    print(base62(id, 6))
+
 
     # ==== if already in DB ==== 
     qs = URLModel.objects.filter(longurl=longurl)
