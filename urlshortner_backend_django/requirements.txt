@@ -1,5 +1,5 @@
 asgiref==3.2.10
-Django==3.0.8
+Django==3.1.12
 django-cors-headers==3.4.0
 pytz==2020.1
 short-url==1.2.2
